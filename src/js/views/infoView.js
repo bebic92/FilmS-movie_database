@@ -1,13 +1,33 @@
-import {domElements} from './base';
+import {domElements, onlyMovieYear} from './base';
 
 const renderMovie = movie => {
 
     return `
     <div class="theatre-movies__card">
-        <img src="https://image.tmdb.org/t/p/original//${movie.poster_path}">
-        <span class="theatre-movies__title">${movie.original_title}</span>
+        <div class="theatre-movies__image-container">
+            <img src="https://image.tmdb.org/t/p/original//${movie.poster_path}">
+            <div class="thumbnail-overlay">
+                <a href="#${movie.id}" class="thumbnail-detals__btn">
+                    Detalji
+                </a>
+            </div>
+        </div>
+        <span class="theatre-movies__title">${movie.original_title} (${onlyMovieYear(movie.release_date)})</span>
     </div>    
     `;
+}
+
+const renderGenres = genres => {
+
+    const newGenres = genres.map(e => {
+        return e.name;
+    });
+
+    if(newGenres) {
+        return newGenres.join(', ');
+    }
+
+    return genres;
 }
 
 export const inTheatres = (movies) => {
@@ -33,6 +53,10 @@ export const setBanner = movie => {
     <div class="main-banner__overlay">
         <div class="main-banner__movie-info">
             <div class="main-banner__movie-title">${movie.original_title}</div>
+            <div class="main-banner-movie__genre-duration-container">
+                <div class="main-banner-movie__genre">${renderGenres(movie.genres)}</div>
+                <div class="main-banner-movie__duration">${movie.runtime ? `${movie.runtime} min` : 'nepoznato trajanje filma'} </div>
+            </div>
             <div class="main-banner__movie-options">
                 <a href="#${movie.id}" class="main-banner__movie-details">
                     <div class="main-banner__movie-details-text">DETALJI</div>

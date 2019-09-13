@@ -1,4 +1,4 @@
-import {domElements} from './base';
+import {domElements, onlyMovieYear} from './base';
 
 export const getSearchInput = () => domElements.mainSearchInput.value;
 
@@ -107,7 +107,7 @@ const reduceTitle = (title, limit = 25) => {
 
 }
 
-const onlyMovieYear = releaseDate => releaseDate.split('-')[0];
+// const onlyMovieYear = releaseDate => releaseDate.split('-')[0];
 
 
 const renderMovie = movie => {

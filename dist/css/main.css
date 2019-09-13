@@ -40,7 +40,20 @@
     font-size: 3rem;
     font-weight: 700;
     max-width: 500px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+}
+
+.main-banner-movie__genre-duration-container {
+    display: flex;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.main-banner-movie__genre {
+    margin-right: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #fff; 
 }
 
 .main-banner__movie-options {
@@ -317,6 +330,10 @@
     cursor: pointer;
 }
 
+.watchlist--highlighted {
+    background-color: #2980b9;
+}
+
 .selected-movie__add-to-watchlist:hover,
 .selected-movie__play-trailer:hover {
     background-color: #2980b9;
@@ -327,6 +344,10 @@
     width: 60%;
     height: auto;
 }
+
+/* .selected-movie__add-to-watchlist:hover svg * {
+    stroke: #fff;
+} */
 
 .selected-movie__play-trailer svg {
     width: 16px;
@@ -398,6 +419,46 @@
     width: 139px;
 }
 
+.similar-movies__image-container {
+    position: relative;
+    height: 197px;
+}
+
+.thumbnail-overlay {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+    opacity: 0;
+    transition: .5s ease;
+}
+
+.similar-movies__image-container:hover .thumbnail-overlay {
+    opacity: 1;
+    height: 100%;
+}
+
+.thumbnail-detals__btn {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 80px;
+    margin-left: -40px;
+    margin-bottom: calc(-0.5rem - 5px);
+    text-align: center;
+    padding: 10px 15px;
+    background-color: #8e44ad;
+    border-radius: 5px;
+    font: inherit;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700; 
+}
+
 .theatre-movies__main {
     display: flex;
     align-items: flex-start;
@@ -411,10 +472,20 @@
     margin-bottom: 1rem;
 }
 
+.theatre-movies__image-container {
+    position: relative;
+    height: 250px;
+}
+
 .theatre-movies__card img {
     width: 100%;
     height: 250px;
     object-fit: cover;
+}
+
+.theatre-movies__image-container:hover .thumbnail-overlay {
+    opacity: 1;
+    height: 100%;
 }
 
 .theatre-movies__title {

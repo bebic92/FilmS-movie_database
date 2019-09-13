@@ -1,4 +1,4 @@
-import {domElements} from './base';
+import {domElements, onlyMovieYear} from './base';
 
 const renderGenres = genres => {
 
@@ -74,8 +74,15 @@ const renderSimilarMovies = movie => {
 
     return `
     <div class="similar-movies__card">
-        ${movieImage}
-        <span class="similar-movies__movie-name">${movie.original_title}</span>
+        <div class="similar-movies__image-container">
+            ${movieImage}
+            <div class="thumbnail-overlay">
+                <a href="#${movie.id}" class="thumbnail-detals__btn">
+                    Detalji
+                </a>
+            </div>
+        </div>
+        <span class="similar-movies__movie-name">${movie.original_title} (${onlyMovieYear(movie.release_date)})</span>
     </div>
     `;
 
@@ -151,7 +158,7 @@ export const clearDetails = () => {
 
 };
 
-export const showDetails = (movie, crew, cast, similarMovies) => {
+export const showDetails = (movie, crew, cast, similarMovies, isLiked) => {
     
     const markup = `
     <div class="selected-movie-details__header">
@@ -163,7 +170,7 @@ export const showDetails = (movie, crew, cast, similarMovies) => {
         </div>
         <div class="selected-movie__details-container">
             <div class="selected-movie__title-rating-container">
-                <h1 class="selected-movie__title">${movie.original_title}</h1>
+                <h1 class="selected-movie__title">${movie.original_title} (${onlyMovieYear(movie.release_date)})</h1>
                 <div class="selected-movie__rating-conatiner">
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -197,7 +204,7 @@ export const showDetails = (movie, crew, cast, similarMovies) => {
             </div>
             <span class="all-crew__text">Cijela filmska ekipa >></span>
             <div class="selected-movie__options">
-                <div class="selected-movie__add-to-watchlist">
+                <div class="selected-movie__add-to-watchlist ${isLiked ? 'watchlist--highlighted' : ''}">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
                         <polyline fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="bevel" stroke-miterlimit="10" points="23,34 30,41 

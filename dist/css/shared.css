@@ -94,8 +94,13 @@ body {
     fill: #7f8c8d;
 } 
 
+.main-nav {
+    position: relative;
+}
+
 .main-nav__items {
     display: flex;
+    align-items: center;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -111,9 +116,67 @@ body {
     color: #7f8c8d;
 }
 
+#main-nav__item-watchlist {
+    font: inherit;
+    color: #7f8c8d;
+    cursor: pointer;
+}
+
 .main-nav__item a:hover,
-.main-nav__item a:active {
+.main-nav__item a:active,
+.main-nav__item-watchlist:active,
+.main-nav__item-watchlist:hover{
     color: #bdc3c7;
+}
+
+.watchlist__container {
+    position: absolute;
+    /* visibility: hidden; */
+    display: none;
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    right: 0;
+    box-shadow: 0.5px 0.5px 2px 0.5px rgb(127, 140, 141, 0.6);
+    overflow: auto;
+}
+
+#main-nav__item-watchlist:hover .watchlist__container {
+    display: block;
+}
+
+.watchlist-movie__row {
+    margin: 10px 0;
+    padding: 5px 5px;
+}
+.watchlist-movie__row:hover,
+.watchlist-movie__row:active,
+.watchlist-movie__row:focus{
+    background-color: #ecf0f1;
+}
+
+.watchlist-movie__row a {
+    display: flex;
+    align-items: center;
+    font:inherit;
+    text-decoration: none;
+}
+
+.watchlist-movie__image-container {
+    width: 2.5rem;
+    flex-shrink: 0;
+}
+
+.watchlist-movie__image-container img {
+    width: 100%;
+}
+
+.watchlist-movie__title {
+    width: auto;
+    flex-shrink: 1;
+    color: #2c3e50;
+    padding: 8px;
+    font-size: 1rem;
 }
 
 main {

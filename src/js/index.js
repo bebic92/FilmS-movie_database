@@ -1,18 +1,18 @@
 import Search from "./models/Search";
 import Movie from './models/Movie';
 import Info from './models/Info';
+import Watchlist from './models/Watchlist';
 
-import * as SearchView from './views/searchView';
+import * as searchView from './views/searchView';
 import * as movieView from './views/movieView';
 import * as infoView from './views/infoView';
+import * as watchlistView from './views/watchlistView';
 
 import {domElements, spinner, clearLoader} from './views/base';
 
 /**GLOBAL STATE */
 
 const state = {};
-
-
 
 /**
  * SEARCH CONTROLLER
@@ -24,9 +24,9 @@ const SearchController = async query => {
 
             state.search = new Search(query);
         
-            SearchView.clearSearchList();
+            searchView.clearSearchList();
             
-            SearchView.clearButtons();
+            searchView.clearButtons();
             
             spinner(domElements.resultsList);
             
@@ -36,7 +36,7 @@ const SearchController = async query => {
 
             clearLoader();
                   
-            SearchView.renderResults(state.search.results);
+            searchView.renderResults(state.search.results);
 
             document.getElementById("main-sidebar").scrollIntoView({behavior: "smooth"});
         }
@@ -48,7 +48,7 @@ domElements.mainSearchForm.addEventListener('submit', e => {
     
     e.preventDefault();
 
-    const query = SearchView.getSearchInput();
+    const query = searchView.getSearchInput();
     
     SearchController(query);
 
@@ -94,11 +94,11 @@ domElements.pagination.addEventListener('click', e => {
 
         const goToPage = parseInt(btn.dataset.goto, 10);
 
-        SearchView.clearButtons();
+        searchView.clearButtons();
 
-        SearchView.clearSearchList();
+        searchView.clearSearchList();
 
-        SearchView.renderResults(state.search.results, goToPage);
+        searchView.renderResults(state.search.results, goToPage);
         
         document.getElementById("main-sidebar").scrollIntoView({behavior: "smooth"});
 
@@ -118,7 +118,7 @@ domElements.pagination.addEventListener('click', e => {
     if(id){
 
         state.movie = new Movie(id);
-    
+        
         try {
 
             movieView.clearDetails();
@@ -133,7 +133,7 @@ domElements.pagination.addEventListener('click', e => {
 
             clearLoader();
             
-            movieView.showDetails(state.movie.details, state.movie.crew, state.movie.cast, state.movie.similarMovies);
+            movieView.showDetails(state.movie.details, state.movie.crew, state.movie.cast, state.movie.similarMovies, state.watchlist.isLiked(state.movie.id));
 
         } catch(error) {
 
@@ -149,12 +149,13 @@ domElements.pagination.addEventListener('click', e => {
 domElements.movieDetailsContainer.addEventListener('click', async e => {
     
     const playButton = e.target.closest('.selected-movie__play-trailer');
-    
+    const watchlistButton = e.target.closest('.selected-movie__add-to-watchlist');
+
     await state.movie.getTrailer();
     
     const trailerId = state.movie.trailer.key;
     
-    if(playButton && state.movie.id && trailerId) {
+    if(playButton && trailerId) {
         
         domElements.backdrop.classList.add('open');
         domElements.trailerPopUp.classList.add('open');
@@ -168,6 +169,31 @@ domElements.movieDetailsContainer.addEventListener('click', async e => {
             domElements.trailerPopUp.classList.remove('open');
 
         });
+
+    } else if(watchlistButton) {
+        
+        if(!state.watchlist) state.watchlist = new Watchlist();
+        
+        if(!state.watchlist.isLiked(state.movie.id)){
+            
+            const movie = state.watchlist.addMovie(state.movie.id, state.movie.details.poster_path, state.movie.details.original_title, state.movie.details.release_date);
+        
+            watchlistView.toggleWatchlistBtn(true);
+
+            watchlistView.addToWatchlist(movie);
+
+            console.log(state.watchlist);
+
+        } else {
+
+            state.watchlist.deleteMovie(state.movie.id);
+
+            watchlistView.removeFromWatchlist(state.movie.id);
+            
+            watchlistView.toggleWatchlistBtn(false);
+
+        }
+        
 
     }
 
@@ -226,3 +252,45 @@ const InfoController = async () => {
 };
 
 window.addEventListener('load', InfoController);
+
+window.addEventListener('load', () => {
+
+    state.watchlist = new Watchlist();
+    
+    state.watchlist.readFromStorage();
+
+    state.watchlist.list.forEach(e => watchlistView.addToWatchlist(e));
+
+});
+
+domElements.banner.addEventListener('click', e => {
+
+    const toWatchlistBtn = e.target.matches('.main-banner__movie-watchlist');
+    const toWatchlistClass = e.target.closest('.main-banner__movie-watchlist');
+
+    if(toWatchlistBtn && state.info.firstInTeathresDetails) {
+
+        if(!state.watchlist.isLiked(state.info.firstInTeathresDetails.id)){
+            
+            const movie = state.watchlist.addMovie(state.info.firstInTeathresDetails.id, state.info.firstInTeathresDetails.poster_path, state.info.firstInTeathresDetails.original_title, state.info.firstInTeathresDetails.release_date);
+        
+            watchlistView.toggleWatchlistBtn(true);
+
+            watchlistView.addToWatchlist(movie);
+
+            toWatchlistClass.innerHTML = '- LISTA ZA GLEDANJE';
+
+        } else {
+
+            state.watchlist.deleteMovie(state.info.firstInTeathresDetails.id);
+
+            watchlistView.removeFromWatchlist(state.info.firstInTeathresDetails.id);
+            
+            watchlistView.toggleWatchlistBtn(false);
+                 
+            toWatchlistClass.textContent = '+ LISTA ZA GLEDANJE';
+
+        }
+
+    }
+});

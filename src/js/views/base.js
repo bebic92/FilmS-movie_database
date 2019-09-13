@@ -12,7 +12,8 @@ export const domElements = {
     backdrop : document.querySelector('.backdrop'),
     allCastPopup : document.querySelector('.all-cast-popup'),
     allCrewPopup : document.querySelector('.all-crew-popup'),
-    banner: document.querySelector('.main-banner')
+    banner: document.querySelector('.main-banner'),
+    watchlistContainer: document.querySelector('.watchlist__container')
     
 }
 
@@ -57,3 +58,5 @@ export const spinner = parent => {
     parent.insertAdjacentHTML('afterbegin', markup);
 
 }
+
+export const onlyMovieYear = releaseDate => releaseDate.split('-')[0];
